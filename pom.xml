@@ -17,6 +17,7 @@
       <lib.scope>provided</lib.scope>
       <mockito.core.version>2.7.6</mockito.core.version>
       <scala.check.version>1.13.4</scala.check.version>
+      <jena.version>3.3.0</jena.version>
   </properties>
 
 
@@ -51,6 +52,31 @@
           <scope>provided</scope>
       </dependency>
 
+      <!-- JENA -->
+      <dependency>
+          <groupId>org.apache.jena</groupId>
+          <artifactId>jena-core</artifactId>
+          <version>${jena.version}</version>
+      </dependency>
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>jena-arq</artifactId>
+				<version>${jena.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-databind</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-annotations</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
       <dependency>
           <groupId>com.databricks</groupId>
           <artifactId>spark-avro_2.11</artifactId>

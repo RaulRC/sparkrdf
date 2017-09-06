@@ -1,9 +1,15 @@
 package org.uclm.alarcos.rrc.io
+import java.io.ByteArrayInputStream
+
 import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql._
 import org.apache.spark.graphx._
 import org.uclm.alarcos.rrc.config.DQAssessmentConfiguration
 import org.apache.spark.rdd.RDD
+import org.apache.jena.graph._
+import org.apache.jena.riot.{Lang, RDFDataMgr}
+
+import scala.util.Random
 /**
   * Created by raulreguillo on 6/09/17.
   */
@@ -14,16 +20,27 @@ trait ReaderRDF extends Serializable{
 
   def execute()
 
-    def readTriplets(path: String): Unit = {
+  def load(session: SparkSession, path: String): RDD[Triple] = {
+    session.sparkContext.textFile(path)
+      .filter(line => !line.trim().isEmpty & !line.startsWith("#"))
+      .map(line =>
+        RDFDataMgr.createIteratorTriples(new ByteArrayInputStream(line.getBytes), Lang.NTRIPLES, null).next())
+  }
+  def readTriplets(path: String): Unit = {
     import processSparkSession.implicits._
     log.info(s"Load DataFrame from Triplets $path")
+    val ran = new Random()
     val triplets = processSparkSession.read.textFile(path).map(line => line.split(" "))
-    val subjects = triplets.map(line => line(0))
-    val predicates = triplets.map(line => line(1))
-    val objects = triplets.map(line => line(2))
+    val subs = triplets.map(line => (ran.nextLong(), line(0)))
+    val preds = triplets.map(line => line(1))
+    val objs = triplets.map(line => (ran.nextLong(), line(2)))
 
     triplets.show(10, truncate = false)
     //val userGraph: Graph[String, String] = Graph(subjects.union(objects), predicates, "")
+
+    val subjects: RDD[(VertexId, String)] = subs.union(objs).rdd
+    val predicates: RDD[Edge[String]] = preds.map(line => Edge(ran.nextLong(), ran.nextLong(),line)).rdd
+
     val users: RDD[(VertexId, (String, String))] =
       processSparkSession.sparkContext.parallelize(Array((3L, ("rxin", "student")), (7L, ("jgonzal", "postdoc")),
                        (5L, ("franklin", "prof")), (2L, ("istoica", "prof"))))
@@ -34,7 +51,12 @@ trait ReaderRDF extends Serializable{
     // Define a default user in case there are relationship with missing user
     val defaultUser = ("John Doe", "Missing")
     // Build the initial Graph
-    val graph = Graph(users, relationships, defaultUser)
+    val graph = org.apache.spark.graphx.Graph(users, relationships, defaultUser)
+
+    val res = graph.edges.mapValues(edge => edge.srcId)
+
+    res.collect().map(line => print(line))
+    graph.vertices.collect().map(vert => print(vert))
 
   }
 }
@@ -43,6 +65,9 @@ class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession
   protected val processSparkSession: SparkSession = sparkSession
 
   def execute(): Unit = {
-    val df = readTriplets(config.hdfsInputPath + "*.nt")
+    //val df = readTriplets(config.hdfsInputPath + "*.nt")
+    val df = load(sparkSession, config.hdfsInputPath + "*.nt")
+    df.collect().map(line => println(line.getSubject().toString() + " :: " + line.getPredicate() + " :: " + line.getObject()))
+
   }
 }
