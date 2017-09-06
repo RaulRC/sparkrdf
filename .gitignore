@@ -1,0 +1,15 @@
+.idea/*
+*.iml
+target/
+out/
+*.crc
+*metastore*
+*.log
+*.txt
+outputs
+logs/
+raml/api.html
+project/target/*
+project/project/*
+project/
+*~
