@@ -1,5 +1,5 @@
 package org.uclm.alarcos.rrc.io
-import java.io.ByteArrayInputStream
+import java.io.{ByteArrayInputStream, File}
 
 import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql._
@@ -8,6 +8,8 @@ import org.uclm.alarcos.rrc.config.DQAssessmentConfiguration
 import org.apache.spark.rdd.RDD
 import org.apache.jena.graph._
 import org.apache.jena.riot.{Lang, RDFDataMgr}
+//import net.sansa_stack.rdf.spark.io.NTripleReader
+//import net.sansa_stack.rdf.spark.qualityassessment.metrics.completeness.InterlinkingCompleteness._
 
 import scala.util.Random
 /**
@@ -20,7 +22,16 @@ trait ReaderRDF extends Serializable{
 
   def execute()
 
-  def load(session: SparkSession, path: String): RDD[Triple] = {
+//  def readTripletsAlt(path: String): Unit = {
+//    val input = processSparkSession.sparkContext.textFile(path)
+//
+//    val triplesRDD = NTripleReader.load(processSparkSession, path)
+//
+//    triplesRDD.collect().foreach(println(_))
+//    println(assertTriples(triplesRDD))
+//  }
+
+  def loadTriplets(session: SparkSession, path: String): RDD[Triple] = {
     session.sparkContext.textFile(path)
       .filter(line => !line.trim().isEmpty & !line.startsWith("#"))
       .map(line =>
@@ -59,6 +70,9 @@ trait ReaderRDF extends Serializable{
     graph.vertices.collect().map(vert => print(vert))
 
   }
+  def showTripletsRDD(tripletsRDD: RDD[Triple]): Unit = {
+    tripletsRDD.collect().foreach(println(_))
+  }
 }
 
 class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession, period: String) extends ReaderRDF{
@@ -66,8 +80,9 @@ class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession
 
   def execute(): Unit = {
     //val df = readTriplets(config.hdfsInputPath + "*.nt")
-    val df = load(sparkSession, config.hdfsInputPath + "*.nt")
-    df.collect().map(line => println(line.getSubject().toString() + " :: " + line.getPredicate() + " :: " + line.getObject()))
+    val df = loadTriplets(sparkSession, config.hdfsInputPath + "*.nt")
+    showTripletsRDD(df)
+    //df.collect().map(line => println(line.getSubject().toString() + " :: " + line.getPredicate() + " :: " + line.getObject()))
 
   }
 }
