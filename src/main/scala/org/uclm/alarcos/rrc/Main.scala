@@ -5,7 +5,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 import org.uclm.alarcos.rrc.config.DQAssessmentConfiguration
-import org.uclm.alarcos.rrc.io.ReaderRDF
+import org.uclm.alarcos.rrc.io.{ReaderRDF, WriterRDF}
 import org.uclm.alarcos.rrc.utils.ParamsHelper
 
 /**
