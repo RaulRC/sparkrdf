@@ -1,7 +1,46 @@
-<http://example.org/show/218> <http://www.w3.org/2000/01/rdf-schema#label> "That Seventies Show"^^<http://www.w3.org/2001/XMLSchema#string> .
-<http://example.org/show/218> <http://www.w3.org/2000/01/rdf-schema#label> "That Seventies Show" .
-<http://example.org/show/218> <http://example.org/show/localName> "That Seventies Show"@en .
-<http://example.org/show/218> <http://example.org/show/localName> "Cette Série des Années Septante"@fr-be .
-<http://example.org/#spiderman> <http://example.org/text> "This is a multi-line\nliteral with many quotes (\"\"\"\"\")\nand two apostrophes ('')." .
-<http://en.wikipedia.org/wiki/Helium> <http://example.org/elements/atomicNumber> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
-<http://en.wikipedia.org/wiki/Helium> <http://example.org/elements/specificGravity> "1.663E-4"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasId> "1435774976"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasTextSource> "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasLang> "en"^^<http://www.w3.org/2001/XMLSchema#language> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasTimeStampMs> "1504363084055"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasText> "RT @GovAbbott: Please join Texans from across the state for a Day of Prayer on Sep. 3rd for all the victims of #Harvey.\u2026 "^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasRetweetCount> "0"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasHashtag> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasht_903990411361792000> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasFavouriteCount> "0"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasCreationDate> "Sat Sep 02 14:38:04 +0000 2017"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Tweet> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#tweet_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#isTruncated> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:A3e6805d2X2dX03abX2dX4288X2dXa80aX2dXfde240158fb4 <http://www.w3.org/2002/07/owl#members> _:Afd3f8511X2dXa8b4X2dX41aeX2dX9ea7X2dX5a1484c67b2d .
+_:A3e6805d2X2dX03abX2dX4288X2dXa80aX2dXfde240158fb4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDisjointClasses> .
+_:A7dd341eeX2dXd12dX2dX4cebX2dXbb77X2dX18f79f26f85b <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:A7dd341eeX2dXd12dX2dX4cebX2dXbb77X2dX18f79f26f85b <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#User> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Tweet1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasId> "819797"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Tweet1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasUser> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#User1> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Tweet1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasCoordinates> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Coord1> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Tweet1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#isVerified> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasUserLang> "en"^^<http://www.w3.org/2001/XMLSchema#language> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasUserId> "15920162"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasUserFavouriteCount> "29350"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasUserCreationDate> "Wed Aug 20 17:23:33 +0000 2008"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasTimeZone> "Pacific Time (US & Canada)"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasName> "AlfonZo Rachel"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasFollowersCount> "31832"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#user_15920162> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#User> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasht_903990411361792000> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasHashtagValue> "Harvey"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasht_903990411361792000> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Hashtag> .
+_:A49b93616X2dXf82fX2dX4909X2dX86d1X2dX2f16bf4ddc26 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:A7dd341eeX2dXd12dX2dX4cebX2dXbb77X2dX18f79f26f85b .
+_:A49b93616X2dXf82fX2dX4909X2dX86d1X2dX2f16bf4ddc26 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Tweet> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Coord1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasLongitude> "-75.14310264"^^<http://www.w3.org/2001/XMLSchema#double> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Coord1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasLatitude> "40.05701649"^^<http://www.w3.org/2001/XMLSchema#double> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Coord1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Hash1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasHashtagValue> "#TestHashtag"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Hash1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#User1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#isVerified> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#User1> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#hasUserId> "819797"^^<http://www.w3.org/2001/XMLSchema#long> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#User1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#coord_903990411361792000> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Coordinates> .
+_:A63d9d456X2dX456cX2dX4975X2dX82a4X2dX9a971158c307 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:A49b93616X2dXf82fX2dX4909X2dX86d1X2dX2f16bf4ddc26 .
+_:A63d9d456X2dX456cX2dX4975X2dX82a4X2dX9a971158c307 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Hashtag> .
+_:Afd3f8511X2dXa8b4X2dX41aeX2dX9ea7X2dX5a1484c67b2d <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:A63d9d456X2dX456cX2dX4975X2dX82a4X2dX9a971158c307 .
+_:Afd3f8511X2dXa8b4X2dX41aeX2dX9ea7X2dX5a1484c67b2d <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.semanticweb.org/rrc/ontologies/2017/7/semtweet#Coordinates> .
