@@ -61,9 +61,12 @@ trait ReaderRDF extends Serializable{
   //RDF Operations
   def getSubjectsWithProperty(graph: org.apache.spark.graphx.Graph[Node, Node], property: String): VertexRDD[Node] = {
     val objectPropertyId = graph.vertices.filter(vert => vert._2.hasURI(property)).first()._1
-    val vertexSubjectIds = graph.edges.filter(line => line.dstId == objectPropertyId).map(line => line.srcId).collect()
-    val subjectVertices = graph.vertices.filter(vert => vertexSubjectIds.contains(vert._1))
-    subjectVertices
+    val vertexSubjectIds = graph.edges.filter(line => line.dstId == objectPropertyId).map(line => line.srcId)
+    val subjectVertices = graph.vertices
+      .join(vertexSubjectIds.keyBy((i => i)))
+      .map(line => (line._1, line._2._1))
+    val result = org.apache.spark.graphx.VertexRDD(subjectVertices)
+    result
   }
 
 }
