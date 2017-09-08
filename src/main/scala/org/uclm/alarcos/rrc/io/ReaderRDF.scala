@@ -62,9 +62,16 @@ class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession
   protected val processSparkSession: SparkSession = sparkSession
 
   def execute(): Unit = {
-    val graph = loadGraph(sparkSession, config.hdfsInputPath + "*.nt")
+    val graph = loadGraph(sparkSession, config.hdfsInputPath + "sample.nt")
     graph.vertices.collect().foreach(println(_))
-    graph.edges.collect()foreach(println(_))
-    graph.connectedComponents().vertices.collect().foreach(println(_))
+//    graph.edges.collect()foreach(println(_))
+    val personPropertyID = graph.vertices.filter(vert => vert._2.hasURI("http://xmlns.com/foaf/0.1/Person")).first()._1
+    val vertexSubjectsIDs = graph.edges.filter(line => line.dstId == personPropertyID).map(line => line.srcId).collect()
+    val subjectVertices = graph.vertices.filter(vert => vertexSubjectsIDs.contains(vert._1))
+
+    subjectVertices.collect().foreach(println(_))
+
+    //graph.edges.filter( line => line.attr.getURI().equals  )
+    //graph.connectedComponents().vertices.collect().foreach(println(_))
   }
 }
