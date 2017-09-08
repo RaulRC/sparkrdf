@@ -22,14 +22,16 @@ object Main {
 
     val environments = config.getStringList("environments")
 
+    /**
+      * input: <environment> <file>
+      */
     if (args.length == 0) {
       logger.error(s"Environment is mandatory. Valid environments are: $environments")
       System.exit(1)
     }
     implicit val params = ParamsHelper.getParams(args)
-    implicit val processClass = params.`class`
     implicit val env = params.env
-    implicit val timeWindow = params.timeWindow
+    implicit val inputFile = params.inputFile
 
     if (!environments.contains(env)) {
       logger.error(s"Environment $env not allowed. Valid environments are: $environments")
@@ -42,7 +44,7 @@ object Main {
     val loadedConfig = DQAssessmentConfiguration.apply(env, config)
 
     val sparkConf = new SparkConf()
-      .setAppName(processClass)
+      .setAppName("SparkRDF")
       .setMaster(loadedConfig.masterMode)
 
     val spark = SparkSession
@@ -51,8 +53,8 @@ object Main {
       .getOrCreate()
 
 
-    logger.info("Loading class " + processClass)
-    launchStep(Class.forName(s"org.uclm.alarcos.rrc.io.$processClass")) (loadedConfig, spark, timeWindow)
+    logger.info("Loading class " + "SparkRDF")
+    launchStep(Class.forName(s"org.uclm.alarcos.rrc.io.TripleReader")) (loadedConfig, spark, inputFile)
 
   }
 

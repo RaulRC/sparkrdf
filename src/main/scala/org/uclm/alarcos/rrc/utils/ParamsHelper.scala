@@ -5,9 +5,9 @@ package org.uclm.alarcos.rrc.utils
   */
 object ParamsHelper {
   def getParams(args: Array[String]): Params = {
-    Params(args(0), args(1), args(2))
+    Params(args(0), args(1))
   }
 }
 
-case class Params(`class`: String, env: String, timeWindow: String)
+case class Params(env: String, inputFile: String)
 

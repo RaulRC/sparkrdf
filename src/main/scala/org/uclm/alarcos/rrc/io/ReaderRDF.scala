@@ -53,22 +53,30 @@ trait ReaderRDF extends Serializable{
     val graph = org.apache.spark.graphx.Graph(subjects.union(objects).distinct(), predicates.distinct())
     graph
   }
+
   def showTripletsRDD(tripletsRDD: RDD[Triple]): Unit = {
     tripletsRDD.collect().foreach(println(_))
   }
+
+  //RDF Operations
+  def getSubjectsWithProperty(graph: org.apache.spark.graphx.Graph[Node, Node], property: String): VertexRDD[Node] = {
+    val objectPropertyId = graph.vertices.filter(vert => vert._2.hasURI(property)).first()._1
+    val vertexSubjectIds = graph.edges.filter(line => line.dstId == objectPropertyId).map(line => line.srcId).collect()
+    val subjectVertices = graph.vertices.filter(vert => vertexSubjectIds.contains(vert._1))
+    subjectVertices
+  }
+
 }
 
-class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession, period: String) extends ReaderRDF{
+class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession, inputFile: String) extends ReaderRDF{
   protected val processSparkSession: SparkSession = sparkSession
 
   def execute(): Unit = {
-    val graph = loadGraph(sparkSession, config.hdfsInputPath + "sample.nt")
+    //val graph = loadGraph(sparkSession, config.hdfsInputPath + "*.nt")
+    val graph = loadGraph(sparkSession, inputFile)
     graph.vertices.collect().foreach(println(_))
 //    graph.edges.collect()foreach(println(_))
-    val personPropertyID = graph.vertices.filter(vert => vert._2.hasURI("http://xmlns.com/foaf/0.1/Person")).first()._1
-    val vertexSubjectsIDs = graph.edges.filter(line => line.dstId == personPropertyID).map(line => line.srcId).collect()
-    val subjectVertices = graph.vertices.filter(vert => vertexSubjectsIDs.contains(vert._1))
-
+    val subjectVertices = getSubjectsWithProperty(graph, "http://xmlns.com/foaf/0.1/Person")
     subjectVertices.collect().foreach(println(_))
 
     //graph.edges.filter( line => line.attr.getURI().equals  )
