@@ -81,7 +81,7 @@ trait ReaderRDF extends Serializable{
   }
 }
 
-class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession, inputFile: String) extends ReaderRDF{
+class TripleReader(sparkSession: SparkSession, inputFile: String) extends ReaderRDF{
   protected val processSparkSession: SparkSession = sparkSession
 
   def execute(): Unit = {
