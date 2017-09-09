@@ -58,6 +58,7 @@ trait ReaderRDF extends Serializable{
     tripletsRDD.collect().foreach(println(_))
   }
 
+
   //RDF Operations
   def getSubjectsWithProperty(graph: org.apache.spark.graphx.Graph[Node, Node], property: String): VertexRDD[Node] = {
     val objectPropertyId = graph.vertices.filter(vert => vert._2.hasURI(property)).first()._1
@@ -68,7 +69,14 @@ trait ReaderRDF extends Serializable{
     val result = org.apache.spark.graphx.VertexRDD(subjectVertices)
     result
   }
+  def expandNodes(nodes: VertexRDD[Node], graph: org.apache.spark.graphx.Graph[Node, Node]): VertexRDD[Node] = {
+    val vertIds = nodes.map(node => (node._1.toLong, node._2))
+    val edges = graph.edges.map(line => (line.srcId, line.dstId))
+    val result = edges.join(vertIds)
+      .map(line => line._2)
 
+    org.apache.spark.graphx.VertexRDD(result)
+  }
 }
 
 class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession, inputFile: String) extends ReaderRDF{
@@ -78,11 +86,10 @@ class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession
     //val graph = loadGraph(sparkSession, config.hdfsInputPath + "*.nt")
     val graph = loadGraph(sparkSession, inputFile)
     graph.vertices.collect().foreach(println(_))
-//    graph.edges.collect()foreach(println(_))
+    graph.edges.collect()foreach(println(_))
     val subjectVertices = getSubjectsWithProperty(graph, "http://xmlns.com/foaf/0.1/Person")
     subjectVertices.collect().foreach(println(_))
-
-    //graph.edges.filter( line => line.attr.getURI().equals  )
-    //graph.connectedComponents().vertices.collect().foreach(println(_))
+    expandNodes(subjectVertices, graph)
+      .collect().foreach(println(_))
   }
 }
