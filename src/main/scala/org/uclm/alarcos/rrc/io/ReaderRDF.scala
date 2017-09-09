@@ -89,7 +89,8 @@ class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession
     val graph = loadGraph(sparkSession, inputFile)
     graph.vertices.collect().foreach(println(_))
     graph.edges.collect()foreach(println(_))
-    val subjectVertices = getSubjectsWithProperty(graph, "http://xmlns.com/foaf/0.1/Person").filter(line => line._2.hasURI("http://dbpedia.org/resource/Aristotle"))
+
+    val subjectVertices = getSubjectsWithProperty(graph, "http://xmlns.com/foaf/0.1/Person")
     subjectVertices.collect().foreach(println(_))
     val expanded = expandNodes(subjectVertices, graph)
     expanded.collect().foreach(println(_))
