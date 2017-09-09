@@ -72,10 +72,12 @@ trait ReaderRDF extends Serializable{
   def expandNodes(nodes: VertexRDD[Node], graph: org.apache.spark.graphx.Graph[Node, Node]): VertexRDD[Node] = {
     val vertIds = nodes.map(node => (node._1.toLong, node._2))
     val edges = graph.edges.map(line => (line.srcId, line.dstId))
-    val result = edges.join(vertIds)
-      .map(line => line._2)
-
-    org.apache.spark.graphx.VertexRDD(result)
+    val newVertsIds = edges.join(vertIds)
+      .map(line => line._2._1)
+    val newVerts = graph.vertices
+      .join(newVertsIds.keyBy((i => i)))
+      .map(line => (line._1, line._2._1))
+    org.apache.spark.graphx.VertexRDD(newVerts.union(nodes).distinct())
   }
 }
 
@@ -87,9 +89,14 @@ class TripleReader(config: DQAssessmentConfiguration, sparkSession: SparkSession
     val graph = loadGraph(sparkSession, inputFile)
     graph.vertices.collect().foreach(println(_))
     graph.edges.collect()foreach(println(_))
-    val subjectVertices = getSubjectsWithProperty(graph, "http://xmlns.com/foaf/0.1/Person")
+    val subjectVertices = getSubjectsWithProperty(graph, "http://xmlns.com/foaf/0.1/Person").filter(line => line._2.hasURI("http://dbpedia.org/resource/Aristotle"))
     subjectVertices.collect().foreach(println(_))
-    expandNodes(subjectVertices, graph)
-      .collect().foreach(println(_))
+    val expanded = expandNodes(subjectVertices, graph)
+    expanded.collect().foreach(println(_))
+    println("level 0: " + expanded.count())
+    val expanded1 = expandNodes(expanded, graph)
+    expanded1.collect().foreach(println(_))
+    println("level 1: " + expanded1.count())
+
   }
 }
