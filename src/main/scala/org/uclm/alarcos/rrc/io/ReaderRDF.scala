@@ -61,6 +61,17 @@ trait ReaderRDF extends Serializable{
 
   //RDF Operations
   def getSubjectsWithProperty(graph: org.apache.spark.graphx.Graph[Node, Node], property: String): VertexRDD[Node] = {
+    val objectPropertyId = graph.edges.filter(edge=> edge.attr.hasURI(property)).map(line => line.srcId)
+
+    val subjectVertices = graph.vertices
+      .join(objectPropertyId.keyBy((i => i)))
+      .map(line => (line._1, line._2._1))
+    val result = org.apache.spark.graphx.VertexRDD(subjectVertices)
+    result
+  }
+
+  @deprecated
+  def Dep_getSubjectsWithProperty(graph: org.apache.spark.graphx.Graph[Node, Node], property: String): VertexRDD[Node] = {
     val objectPropertyId = graph.vertices.filter(vert => vert._2.hasURI(property)).first()._1
     val vertexSubjectIds = graph.edges.filter(line => line.dstId == objectPropertyId).map(line => line.srcId)
     val subjectVertices = graph.vertices
@@ -90,7 +101,7 @@ class TripleReader(sparkSession: SparkSession, inputFile: String) extends Reader
     graph.vertices.collect().foreach(println(_))
     graph.edges.collect()foreach(println(_))
 
-    val subjectVertices = getSubjectsWithProperty(graph, "http://xmlns.com/foaf/0.1/Person")
+    val subjectVertices = getSubjectsWithProperty(graph, "http://dbpedia.org/ontology/deathPlace")
     subjectVertices.collect().foreach(println(_))
     val expanded = expandNodes(subjectVertices, graph)
     expanded.collect().foreach(println(_))

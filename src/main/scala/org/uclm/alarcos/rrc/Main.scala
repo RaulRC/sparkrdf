@@ -54,7 +54,7 @@ object Main {
 
 
     logger.info("Loading class " + "SparkRDF")
-    launchStep(Class.forName(s"org.uclm.alarcos.rrc.io.TripleReader")) (loadedConfig, spark, inputFile)
+    launchStep(Class.forName(s"org.uclm.alarcos.rrc.io.TripleReader")) (spark, inputFile)
 
   }
 

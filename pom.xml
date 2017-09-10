@@ -236,7 +236,7 @@
           <build>
               <resources>
                   <resource>
-                      <directory>src/main/resources/local</directory>
+                      <directory>src/main/resources</directory>
                       <filtering>true</filtering>
                   </resource>
               </resources>
@@ -247,7 +247,7 @@
           <build>
               <resources>
                   <resource>
-                      <directory>src/main/resources/dev</directory>
+                      <directory>src/main/resources</directory>
                       <filtering>true</filtering>
                   </resource>
               </resources>
