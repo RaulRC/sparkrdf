@@ -90,6 +90,20 @@ trait ReaderRDF extends Serializable{
       .map(line => (line._1, line._2._1))
     org.apache.spark.graphx.VertexRDD(newVerts.union(nodes).distinct())
   }
+  def expandNodesNLevel(nodes: VertexRDD[Node],
+                        graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int): VertexRDD[Node] = {
+
+    var idsLvl: Seq[(Int, (Long, Long))] = nodes.map(node => (0, (node._1.toLong, node._1.toLong))).collect()
+
+    for (level <- 0 to levels - 1){
+      idsLvl = idsLvl ++ graph.edges.filter(edge => idsLvl
+        .filter(levels => levels._1 == level)
+        .map(line => line._2._1).contains(edge.srcId)).map(line => (level + 1, (line.srcId ,line.dstId ))).collect()
+    }
+    idsLvl.foreach(println(_))
+    null
+  }
+
 }
 
 class TripleReader(sparkSession: SparkSession, inputFile: String) extends ReaderRDF{
@@ -103,12 +117,12 @@ class TripleReader(sparkSession: SparkSession, inputFile: String) extends Reader
 
     val subjectVertices = getSubjectsWithProperty(graph, "http://dbpedia.org/ontology/deathPlace")
     subjectVertices.collect().foreach(println(_))
-    val expanded = expandNodes(subjectVertices, graph)
-    expanded.collect().foreach(println(_))
-    println("level 0: " + expanded.count())
-    val expanded1 = expandNodes(expanded, graph)
-    expanded1.collect().foreach(println(_))
-    println("level 1: " + expanded1.count())
+    val expanded = expandNodesNLevel(subjectVertices, graph, 3)
+//    expanded.collect().foreach(println(_))
+//    println("level 0: " + expanded.count())
+//    val expanded1 = expandNodes(expanded, graph)
+//    expanded1.collect().foreach(println(_))
+//    println("level 1: " + expanded1.count())
 
   }
 }
