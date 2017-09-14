@@ -103,34 +103,13 @@ trait ReaderRDF extends Serializable{
     for (level <- 1 to levels-1) {
       val res = edges.join(edgesR.drop("depth"), $"dstId" === $"source", "leftouter").orderBy($"srcId")
       edgesR = res.select($"srcId" as "source", $"level" as "level").withColumn("depth", lit(level))
-      edgesR.toDF().show(1000)
       results = results.union(edgesR.distinct())
     }
 
     results = results.distinct().orderBy($"depth", $"source")
     //TODO filter nodes
-    //results.show(1000)
-    //results.rdd.collect().foreach(println(_))
-
-
-//val edges = sc.parallelize(Seq((1,2), (2,3), (2,4), (3,5), (4,6), (5,6), (6,7))).toDF(Seq("srcId", "dstId"): _*)
-//var edgesR = edges.select($"srcId" as "source", $"dstId" as "level").withColumn("depth", lit(0))
-//var results = edgesR.distinct()
-
-//    val seq = Seq((1,2), (2,3), (2,4), (3,5), (4,6), (5,6), (6,7))
-//    val edges = processSparkSession.sparkContext.parallelize(seq)
-//    val names = Seq("srcId", "dstId")
-//    val nedges = edges.toDF(names: _*)
-//    val nedgesR = nedges.toDF(Seq("source", "destiny"): _*)
-//    nedges.join(nedgesR, $"dstId" === $"source", "leftouter").orderBy($"srcId").show()
-//    val nedges1 = nedges.join(nedgesR, $"dstId" === $"source", "leftouter").orderBy($"srcId").drop($"source").select($"srcId", $"dstId", $"destiny" as "_1")
-//    val nedges2 = nedges1.select($"source", $"_1" as "destiny")
-//    val nedgesR2 = nedges.join(nedges2, $"dstId" === $"source", "leftouter").orderBy($"srcId").drop($"source").select($"srcId", $"dstId", $"destiny" as "_2")
-//    val n2 = nedgesR2.drop($"dstId")
-//    nedges1.join(n2, $"source" === $"srcId").drop($"srcId").orderBy($"source").show()
     results.rdd
   }
-
 }
 
 class TripleReader(sparkSession: SparkSession, inputFile: String) extends ReaderRDF{
@@ -145,11 +124,5 @@ class TripleReader(sparkSession: SparkSession, inputFile: String) extends Reader
     val subjectVertices = getSubjectsWithProperty(graph, "http://dbpedia.org/ontology/deathPlace")
     subjectVertices.collect().foreach(println(_))
     val expanded = expandNodesNLevel(subjectVertices, graph, 3)
-//    expanded.collect().foreach(println(_))
-//    println("level 0: " + expanded.count())
-//    val expanded1 = expandNodes(expanded, graph)
-//    expanded1.collect().foreach(println(_))
-//    println("level 1: " + expanded1.count())
-
   }
 }
