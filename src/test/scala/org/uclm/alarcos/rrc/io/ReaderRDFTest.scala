@@ -35,22 +35,22 @@ class ReaderRDFTest extends CommonTest with SparkSpec with MockFactory {
     val F = 293150412L
     val G = 293150443L
     //LVL 0
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === B & l.get(2) === 0).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === C & l.get(2) === 0).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === D & l.get(2) === 0).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === E & l.get(2) === 0).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === C & l.get(1).asInstanceOf[Long] === E & l.get(2) === 0).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === D & l.get(1).asInstanceOf[Long] === F & l.get(2) === 0).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === F & l.get(1).asInstanceOf[Long] === G & l.get(2) === 0).length === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === B & l.get(2) === 0) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === C & l.get(2) === 0) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === D & l.get(2) === 0) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === E & l.get(2) === 0) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === C & l.get(1).asInstanceOf[Long] === E & l.get(2) === 0) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === D & l.get(1).asInstanceOf[Long] === F & l.get(2) === 0) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === F & l.get(1).asInstanceOf[Long] === G & l.get(2) === 0) === 1)
     //LVL 1
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === C & l.get(2) === 1).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === D & l.get(2) === 1).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === E & l.get(2) === 1).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === F & l.get(2) === 1).length === 1)
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === D & l.get(1).asInstanceOf[Long] === G & l.get(2) === 1).length === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === C & l.get(2) === 1) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === D & l.get(2) === 1) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === E & l.get(2) === 1) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === B & l.get(1).asInstanceOf[Long] === F & l.get(2) === 1) === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === D & l.get(1).asInstanceOf[Long] === G & l.get(2) === 1) === 1)
     //LVL 2
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === F & l.get(2) === 2).length === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === F & l.get(2) === 2) === 1)
     //LVL 3
-    assert(results.filter(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === G & l.get(2) === 3).length === 1)
+    assert(results.count(l => l.get(0).asInstanceOf[Long] === A & l.get(1).asInstanceOf[Long] === G & l.get(2) === 3) === 1)
   }
 }
