@@ -3,6 +3,7 @@ package org.uclm.alarcos.rrc.io
 import java.io.{ByteArrayInputStream}
 import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql._
+import org.apache.spark.sql.functions._
 import org.uclm.alarcos.rrc.config.DQAssessmentConfiguration
 import org.apache.jena.graph._
 import org.apache.jena.riot.{Lang, RDFDataMgr}
@@ -94,18 +95,19 @@ trait ReaderRDF extends Serializable{
                         graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int): VertexRDD[Node] = {
     import processSparkSession.implicits._
 
-    val edges = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("srcId", "dstId"): _*)
-    var edgesR = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("source", "level"): _*)
+    val edges = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("srcId", "dstId"): _*).cache()
+    var edgesR = graph.edges.map(l => (l.srcId, l.dstId, 0)).toDF(Seq("source", "level", "depth"): _*)
 
 
-    var results = edgesR
+    var results = edgesR.distinct()
 
-    for (level <- 1 to levels) {
-      val res = edges.join(edgesR, $"dstId" === $"source", "leftouter").orderBy($"srcId")
-      edgesR = res.select($"srcId" as "source", $"dstId" as "level")
-      //results.union(edgesR)
+    for (level <- 1 to levels-1) {
+      val res = edges.join(edgesR.drop("depth"), $"dstId" === $"source", "leftouter").orderBy($"srcId")
+      edgesR = res.select($"srcId" as "source", $"dstId" as "level").withColumn("depth", lit(level))
+      results = results.union(edgesR.distinct())
     }
 
+    results = results.distinct().orderBy($"depth", $"source")
     results.show(1000)
 
 
