@@ -92,15 +92,36 @@ trait ReaderRDF extends Serializable{
   }
   def expandNodesNLevel(nodes: VertexRDD[Node],
                         graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int): VertexRDD[Node] = {
+    import processSparkSession.implicits._
 
-    var idsLvl: Seq[(Int, (Long, Long))] = nodes.map(node => (0, (node._1.toLong, node._1.toLong))).collect()
+    val edges = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("srcId", "dstId"): _*)
+    var edgesR = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("source", "level"): _*)
 
-    for (level <- 0 to levels - 1){
-      idsLvl = idsLvl ++ graph.edges.filter(edge => idsLvl
-        .filter(levels => levels._1 == level)
-        .map(line => line._2._1).contains(edge.srcId)).map(line => (level + 1, (line.srcId ,line.dstId ))).collect()
+
+    var results = edgesR
+
+    for (level <- 1 to levels) {
+      val res = edges.join(edgesR, $"dstId" === $"source", "leftouter").orderBy($"srcId")
+      edgesR = res.select($"srcId" as "source", $"dstId" as "level")
+      //results.union(edgesR)
     }
-    idsLvl.foreach(println(_))
+
+    results.show(1000)
+
+
+
+
+//    val seq = Seq((1,2), (2,3), (2,4), (3,5), (4,6), (5,6), (6,7))
+//    val edges = processSparkSession.sparkContext.parallelize(seq)
+//    val names = Seq("srcId", "dstId")
+//    val nedges = edges.toDF(names: _*)
+//    val nedgesR = nedges.toDF(Seq("source", "destiny"): _*)
+//    nedges.join(nedgesR, $"dstId" === $"source", "leftouter").orderBy($"srcId").show()
+//    val nedges1 = nedges.join(nedgesR, $"dstId" === $"source", "leftouter").orderBy($"srcId").drop($"source").select($"srcId", $"dstId", $"destiny" as "_1")
+//    val nedges2 = nedges1.select($"source", $"_1" as "destiny")
+//    val nedgesR2 = nedges.join(nedges2, $"dstId" === $"source", "leftouter").orderBy($"srcId").drop($"source").select($"srcId", $"dstId", $"destiny" as "_2")
+//    val n2 = nedgesR2.drop($"dstId")
+//    nedges1.join(n2, $"source" === $"srcId").drop($"srcId").orderBy($"source").show()
     null
   }
 
