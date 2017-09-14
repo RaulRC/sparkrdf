@@ -108,6 +108,7 @@ trait ReaderRDF extends Serializable{
     }
 
     results = results.distinct().orderBy($"depth", $"source")
+    //TODO filter nodes
     results.show(1000)
 
 
