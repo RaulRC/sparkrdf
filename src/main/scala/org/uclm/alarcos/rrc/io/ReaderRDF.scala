@@ -81,6 +81,7 @@ trait ReaderRDF extends Serializable{
     val result = org.apache.spark.graphx.VertexRDD(subjectVertices)
     result
   }
+  @deprecated
   def expandNodes(nodes: VertexRDD[Node], graph: org.apache.spark.graphx.Graph[Node, Node]): VertexRDD[Node] = {
     val vertIds = nodes.map(node => (node._1.toLong, node._2))
     val edges = graph.edges.map(line => (line.srcId, line.dstId))
@@ -92,7 +93,7 @@ trait ReaderRDF extends Serializable{
     org.apache.spark.graphx.VertexRDD(newVerts.union(nodes).distinct())
   }
   def expandNodesNLevel(nodes: VertexRDD[Node],
-                        graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int): RDD[Row] = {
+                        graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int = 1): RDD[Row] = {
     import processSparkSession.implicits._
 
     val edges = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("srcId", "dstId"): _*).cache()
