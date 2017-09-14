@@ -17,7 +17,7 @@ class ReaderRDFTest extends CommonTest with SparkSpec with MockFactory {
     val step = MockedTripleReader
     val graph = step.loadGraph(spark, testPath)
     val depth = 4
-    val result = step.expandNodesNLevel(graph.vertices, graph, depth)
+    val result = step.expandNodesNLevel(graph.vertices, graph, depth).rdd
     val results = result.collect()
     results.foreach(println(_))
 

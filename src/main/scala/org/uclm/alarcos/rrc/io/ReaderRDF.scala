@@ -92,7 +92,7 @@ trait ReaderRDF extends Serializable{
     org.apache.spark.graphx.VertexRDD(newVerts.union(nodes).distinct())
   }
   def expandNodesNLevel(nodes: VertexRDD[Node],
-                        graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int = 1): RDD[Row] = {
+                        graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int = 1): Dataset[Row] = {
     import processSparkSession.implicits._
 
     val edges = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("srcId", "dstId"): _*).cache()
@@ -107,7 +107,7 @@ trait ReaderRDF extends Serializable{
       results = results.union(edgesR.distinct())
     }
     results = results.join(nodesR, $"source" === $"nodeId").drop($"nodeId").na.drop().distinct().orderBy($"depth", $"source")
-    results.rdd
+    results
   }
 }
 
@@ -123,6 +123,6 @@ class TripleReader(sparkSession: SparkSession, inputFile: String) extends Reader
     val subjectVertices = getSubjectsWithProperty(graph, "http://dbpedia.org/ontology/deathPlace")
     val expanded = expandNodesNLevel(subjectVertices, graph, 3)
     subjectVertices.collect().foreach(println(_))
-    expanded.collect().foreach(println(_))
+    expanded.show()
   }
 }
