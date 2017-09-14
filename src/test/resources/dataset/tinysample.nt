@@ -1,0 +1,40 @@
+<http://dbpedia.org/resource/subject_A> <http://xmlns.com/foaf/0.1/name> "A Subject"@en .
+<http://dbpedia.org/resource/subject_A> <http://xmlns.com/foaf/0.1/surname> "A surname"@en .
+<http://dbpedia.org/resource/subject_A> <http://xmlns.com/foaf/0.1/givenName> "A"@en .
+
+<http://dbpedia.org/resource/subject_A> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_B> .
+
+<http://dbpedia.org/resource/subject_B> <http://xmlns.com/foaf/0.1/name> "B Subject"@en .
+<http://dbpedia.org/resource/subject_B> <http://xmlns.com/foaf/0.1/surname> "B surname"@en .
+<http://dbpedia.org/resource/subject_B> <http://xmlns.com/foaf/0.1/givenName> "B"@en .
+
+<http://dbpedia.org/resource/subject_B> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_C> .
+<http://dbpedia.org/resource/subject_B> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_D> .
+<http://dbpedia.org/resource/subject_B> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_E> .
+
+<http://dbpedia.org/resource/subject_C> <http://xmlns.com/foaf/0.1/name> "C Subject"@en .
+<http://dbpedia.org/resource/subject_C> <http://xmlns.com/foaf/0.1/surname> "C surname"@en .
+<http://dbpedia.org/resource/subject_C> <http://xmlns.com/foaf/0.1/givenName> "C"@en .
+
+<http://dbpedia.org/resource/subject_C> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_E> .
+
+<http://dbpedia.org/resource/subject_D> <http://xmlns.com/foaf/0.1/name> "D Subject"@en .
+<http://dbpedia.org/resource/subject_D> <http://xmlns.com/foaf/0.1/surname> "D surname"@en .
+<http://dbpedia.org/resource/subject_D> <http://xmlns.com/foaf/0.1/givenName> "D"@en .
+
+<http://dbpedia.org/resource/subject_D> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_E> .
+<http://dbpedia.org/resource/subject_D> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_F> .
+
+<http://dbpedia.org/resource/subject_E> <http://xmlns.com/foaf/0.1/name> "E Subject"@en .
+<http://dbpedia.org/resource/subject_E> <http://xmlns.com/foaf/0.1/surname> "E surname"@en .
+<http://dbpedia.org/resource/subject_E> <http://xmlns.com/foaf/0.1/givenName> "E"@en .
+
+<http://dbpedia.org/resource/subject_F> <http://xmlns.com/foaf/0.1/name> "F Subject"@en .
+<http://dbpedia.org/resource/subject_F> <http://xmlns.com/foaf/0.1/surname> "F surname"@en .
+<http://dbpedia.org/resource/subject_F> <http://xmlns.com/foaf/0.1/givenName> "F"@en .
+
+<http://dbpedia.org/resource/subject_F> <http://dbpedia.org/ontology/knows> <http://dbpedia.org/resource/subject_G> .
+
+<http://dbpedia.org/resource/subject_G> <http://xmlns.com/foaf/0.1/name> "G Subject"@en .
+<http://dbpedia.org/resource/subject_G> <http://xmlns.com/foaf/0.1/surname> "G surname"@en .
+<http://dbpedia.org/resource/subject_G> <http://xmlns.com/foaf/0.1/givenName> "G"@en .

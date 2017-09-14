@@ -92,12 +92,11 @@ trait ReaderRDF extends Serializable{
     org.apache.spark.graphx.VertexRDD(newVerts.union(nodes).distinct())
   }
   def expandNodesNLevel(nodes: VertexRDD[Node],
-                        graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int): VertexRDD[Node] = {
+                        graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int): RDD[Row] = {
     import processSparkSession.implicits._
 
     val edges = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("srcId", "dstId"): _*).cache()
     var edgesR = graph.edges.map(l => (l.srcId, l.dstId, 0)).toDF(Seq("source", "level", "depth"): _*)
-
 
     var results = edgesR.distinct()
 
@@ -109,7 +108,8 @@ trait ReaderRDF extends Serializable{
 
     results = results.distinct().orderBy($"depth", $"source")
     //TODO filter nodes
-    results.show(1000)
+    //results.show(1000)
+    results.rdd.collect().foreach(println(_))
 
 
 
@@ -125,7 +125,7 @@ trait ReaderRDF extends Serializable{
 //    val nedgesR2 = nedges.join(nedges2, $"dstId" === $"source", "leftouter").orderBy($"srcId").drop($"source").select($"srcId", $"dstId", $"destiny" as "_2")
 //    val n2 = nedgesR2.drop($"dstId")
 //    nedges1.join(n2, $"source" === $"srcId").drop($"srcId").orderBy($"source").show()
-    null
+    results.rdd
   }
 
 }
