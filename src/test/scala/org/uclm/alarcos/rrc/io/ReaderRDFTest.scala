@@ -6,7 +6,7 @@ import org.uclm.alarcos.rrc.CommonTest
 import org.uclm.alarcos.rrc.spark.SparkSpec
 
 /**
-  * Created by raul.reguillo on 12/06/17.
+  * Created by raul.reguillo on 14/09/17.
   */
 @RunWith(classOf[JUnitRunner])
 class ReaderRDFTest extends CommonTest with SparkSpec with MockFactory {
@@ -19,6 +19,7 @@ class ReaderRDFTest extends CommonTest with SparkSpec with MockFactory {
     val depth = 4
     val result = step.expandNodesNLevel(graph.vertices, graph, depth)
     val results = result.collect()
+    results.foreach(println(_))
 
     //    A -> B -> D -> F -> G
     //         | \  |

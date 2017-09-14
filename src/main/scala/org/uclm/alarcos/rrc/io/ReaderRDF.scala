@@ -107,7 +107,7 @@ trait ReaderRDF extends Serializable{
       edgesR = res.select($"srcId" as "source", $"level" as "level").withColumn("depth", lit(level))
       results = results.union(edgesR.distinct())
     }
-    results = results.join(nodesR, $"source" === $"nodeId").distinct().orderBy($"depth", $"source")
+    results = results.join(nodesR, $"source" === $"nodeId").drop($"nodeId").distinct().orderBy($"depth", $"source")
     results.rdd
   }
 }
