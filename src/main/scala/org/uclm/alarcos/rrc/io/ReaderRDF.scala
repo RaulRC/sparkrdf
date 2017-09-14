@@ -102,17 +102,20 @@ trait ReaderRDF extends Serializable{
 
     for (level <- 1 to levels-1) {
       val res = edges.join(edgesR.drop("depth"), $"dstId" === $"source", "leftouter").orderBy($"srcId")
-      edgesR = res.select($"srcId" as "source", $"dstId" as "level").withColumn("depth", lit(level))
+      edgesR = res.select($"srcId" as "source", $"level" as "level").withColumn("depth", lit(level))
+      edgesR.toDF().show(1000)
       results = results.union(edgesR.distinct())
     }
 
     results = results.distinct().orderBy($"depth", $"source")
     //TODO filter nodes
     //results.show(1000)
-    results.rdd.collect().foreach(println(_))
+    //results.rdd.collect().foreach(println(_))
 
 
-
+//val edges = sc.parallelize(Seq((1,2), (2,3), (2,4), (3,5), (4,6), (5,6), (6,7))).toDF(Seq("srcId", "dstId"): _*)
+//var edgesR = edges.select($"srcId" as "source", $"dstId" as "level").withColumn("depth", lit(0))
+//var results = edgesR.distinct()
 
 //    val seq = Seq((1,2), (2,3), (2,4), (3,5), (4,6), (5,6), (6,7))
 //    val edges = processSparkSession.sparkContext.parallelize(seq)
