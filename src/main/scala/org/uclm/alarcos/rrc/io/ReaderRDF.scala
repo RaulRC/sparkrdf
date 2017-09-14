@@ -101,7 +101,7 @@ trait ReaderRDF extends Serializable{
 
     var results = edgesR.distinct()
 
-    for (level <- 1 until levels-1) {
+    for (level <- 1 until levels) {
       val res = edges.join(edgesR.drop("depth"), $"dstId" === $"source", "leftouter").orderBy($"srcId")
       edgesR = res.select($"srcId" as "source", $"level" as "level").withColumn("depth", lit(level))
       results = results.union(edgesR.distinct())
