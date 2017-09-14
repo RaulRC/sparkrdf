@@ -4,7 +4,6 @@ import java.io.{ByteArrayInputStream}
 import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions._
-import org.uclm.alarcos.rrc.config.DQAssessmentConfiguration
 import org.apache.jena.graph._
 import org.apache.jena.riot.{Lang, RDFDataMgr}
 import org.apache.spark.graphx._
@@ -102,7 +101,7 @@ trait ReaderRDF extends Serializable{
 
     var results = edgesR.distinct()
 
-    for (level <- 1 to levels-1) {
+    for (level <- 1 until levels-1) {
       val res = edges.join(edgesR.drop("depth"), $"dstId" === $"source", "leftouter").orderBy($"srcId")
       edgesR = res.select($"srcId" as "source", $"level" as "level").withColumn("depth", lit(level))
       results = results.union(edgesR.distinct())
