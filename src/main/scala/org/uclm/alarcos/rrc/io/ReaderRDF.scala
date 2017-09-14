@@ -96,8 +96,8 @@ trait ReaderRDF extends Serializable{
     import processSparkSession.implicits._
 
     val edges = graph.edges.map(l => (l.srcId, l.dstId)).toDF(Seq("srcId", "dstId"): _*).cache()
-    var edgesR = graph.edges.map(l => (l.srcId, l.dstId, 0)).toDF(Seq("source", "level", "depth"): _*)
-    var nodesR = nodes.map(l => l._1).toDF(Seq("nodeId"): _*)
+    var edgesR = graph.edges.map(l => (l.srcId, l.dstId, 0)).toDF(Seq("source", "level", "depth"): _*).cache()
+    val nodesR = nodes.map(l => l._1).toDF(Seq("nodeId"): _*)
 
     var results = edgesR.distinct()
 
