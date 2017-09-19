@@ -1,13 +1,14 @@
 package org.uclm.alarcos.rrc.io
 
-import java.io.{ByteArrayInputStream}
+import java.io.ByteArrayInputStream
+
 import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql._
-import org.uclm.alarcos.rrc.config.DQAssessmentConfiguration
 import org.apache.jena.graph._
 import org.apache.jena.riot.{Lang, RDFDataMgr}
 import org.apache.spark.graphx._
 import org.apache.spark.rdd.RDD
+import org.uclm.alarcos.rrc.configrdf.SparkRDFConfiguration
 
 /**
   * Created by raulreguillo on 6/09/17.
@@ -26,7 +27,7 @@ trait WriterRDF extends Serializable{
   }
 }
 
-class TripleWriter(config: DQAssessmentConfiguration, sparkSession: SparkSession, period: String) extends WriterRDF{
+class TripleWriter(config: SparkRDFConfiguration, sparkSession: SparkSession, period: String) extends WriterRDF{
   protected val processSparkSession: SparkSession = sparkSession
 
   def execute(): Unit = {

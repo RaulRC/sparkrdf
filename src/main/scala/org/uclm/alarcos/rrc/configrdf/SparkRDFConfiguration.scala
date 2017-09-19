@@ -1,11 +1,11 @@
-package org.uclm.alarcos.rrc.config
+package org.uclm.alarcos.rrc.configrdf
 
 import com.typesafe.config.Config
 
 /**
   * Created by Raul Reguillo on 30/08/17.
   */
-class DQAssessmentConfiguration(env: String, config: Config) extends Serializable{
+class SparkRDFConfiguration(env: String, config: Config) extends Serializable{
 
   val masterMode = config.getString(s"$env.masterMode")
   val hdfsOutputPath = config.getString(s"$env.hdfs.outputPath")
@@ -14,7 +14,7 @@ class DQAssessmentConfiguration(env: String, config: Config) extends Serializabl
 
 }
 
-object DQAssessmentConfiguration {
+object SparkRDFConfiguration {
 
   /**
     * Returns the configuration for a specific environment
@@ -23,5 +23,5 @@ object DQAssessmentConfiguration {
     * @return the configuration for Arrowhead steps
     */
   def apply(env:String, config: Config) =
-    new DQAssessmentConfiguration(env, config)
+    new SparkRDFConfiguration(env, config)
 }

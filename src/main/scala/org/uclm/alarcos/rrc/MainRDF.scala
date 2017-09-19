@@ -4,14 +4,14 @@ import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
-import org.uclm.alarcos.rrc.config.DQAssessmentConfiguration
+import org.uclm.alarcos.rrc.configrdf.SparkRDFConfiguration
 import org.uclm.alarcos.rrc.io.{ReaderRDF, WriterRDF}
 import org.uclm.alarcos.rrc.utils.ParamsHelper
 
 /**
   * Created by Raul Reguillo on 31/08/17.
   */
-object Main {
+object MainRDF {
 
   def main(args: Array[String]): Unit = {
 
@@ -41,7 +41,7 @@ object Main {
     logger.info("Create Context for " + env)
     logger.info("Configuration file loaded..." + config.getConfig(env))
 
-    val loadedConfig = DQAssessmentConfiguration.apply(env, config)
+    val loadedConfig = SparkRDFConfiguration.apply(env, config)
 
     val sparkConf = new SparkConf()
       .setAppName("SparkRDF")

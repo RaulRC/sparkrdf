@@ -1,4 +1,4 @@
-package org.uclm.alarcos.rrc.utils
+package org.uclm.alarcos.rrc.utilsrdf
 
 /**
   * Created by Raul Reguillo on 31/08/17.
