@@ -60,6 +60,7 @@ trait ReaderRDF extends Serializable{
 
 
   //RDF Operations
+  @deprecated
   def getSubjectsWithProperty(graph: org.apache.spark.graphx.Graph[Node, Node], property: String): VertexRDD[Node] = {
     val objectPropertyId = graph.edges.filter(edge=> edge.attr.hasURI(property)).map(line => line.srcId)
 
