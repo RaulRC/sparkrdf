@@ -6,7 +6,7 @@ import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 import org.uclm.alarcos.rrc.configrdf.SparkRDFConfiguration
 import org.uclm.alarcos.rrc.io.{ReaderRDF, WriterRDF}
-import org.uclm.alarcos.rrc.utils.ParamsHelper
+import org.uclm.alarcos.rrc.utilsrdf.ParamsHelper
 
 /**
   * Created by Raul Reguillo on 31/08/17.
