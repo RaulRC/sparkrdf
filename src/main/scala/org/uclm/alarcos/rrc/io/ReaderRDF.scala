@@ -18,25 +18,63 @@ trait ReaderRDF extends Serializable{
 
   def execute()
 
+  /**
+    * Main method for load the graph from a path
+    *
+    * @param session Spark session
+    * @param path Path of the NT files to read. Could be a local, HDFS, S3 path
+    * @return Spark GraphX of Nodes
+    */
   def loadGraph(session: SparkSession, path: String): org.apache.spark.graphx.Graph[Node, Node] = {
     getSemanticGraph(loadTriplets(session, path))
   }
 
+  /**
+    * Returns all the subjects in the file (but not the objects or predicates)
+    *
+    * @param session Spark session
+    * @param path Path of the NT files to read. Could be a local, HDFS, S3 path
+    * @return RDD of Nodes which are subjects in the files
+    */
   def loadSubjects(session: SparkSession, path: String): RDD[Node] = {
     loadTriplets(session, path)
       .map(triplet => triplet.getSubject())
       .distinct()
   }
+
+  /**
+    * Returns all the distinct predicates in the file
+    *
+    * @param session Spark session
+    * @param path Path of the NT files to read. Could be a local, HDFS, S3 path
+    * @return RDD of Nodes which are predicates in the files
+    */
   def loadPredicates(session: SparkSession, path: String): RDD[Node] = {
     loadTriplets(session, path)
       .map(triplet => triplet.getPredicate())
       .distinct()
   }
+
+  /**
+    * Returns all the distinct objects in the file (but not the subjects or predicates)
+    *
+    * @param session Spark session
+    * @param path Path of the NT files to read. Could be a local, HDFS, S3 path
+    * @return RDD of Nodes which are objects in the files
+    */
   def loadObjects(session: SparkSession, path: String): RDD[Node] = {
     loadTriplets(session, path)
       .map(triplet => triplet.getObject())
       .distinct()
   }
+
+  /**
+    * Load the triplets initially
+    *
+    * @param sparkSession Spark session
+    * @param path Path of the NT files to read. Could be a local, HDFS, S3 path
+    * @return RDD of Triples {subject, predicate, object}
+    */
   def loadTriplets(sparkSession: SparkSession, path: String): RDD[Triple] = {
     val tripletsRDD = sparkSession.sparkContext.textFile(path)
       .filter(line => !line.trim().isEmpty & !line.startsWith("#"))
@@ -44,6 +82,13 @@ trait ReaderRDF extends Serializable{
         RDFDataMgr.createIteratorTriples(new ByteArrayInputStream(line.getBytes), Lang.NTRIPLES, null).next())
     tripletsRDD
   }
+
+  /**
+    * Returns the parsed graph
+    *
+    * @param tripleRDD A RDD of Triples {subject, predicate, object}
+    * @return Spark GraphX of Nodes
+    */
   private def getSemanticGraph(tripleRDD: RDD[Triple]): org.apache.spark.graphx.Graph[Node, Node] = {
     //Generate hashCodes for graphx representation
     val extTripleRDD = tripleRDD.map(triple => (triple, triple.getSubject().hashCode().toLong, triple.getObject().hashCode().toLong))
@@ -54,13 +99,24 @@ trait ReaderRDF extends Serializable{
     graph
   }
 
+  /**
+    * Prints the current RDD of Triples
+    * Warning: this method needs to collect the RDD
+    *
+    * @param tripletsRDD
+    */
   def showTripletsRDD(tripletsRDD: RDD[Triple]): Unit = {
     tripletsRDD.collect().foreach(println(_))
   }
 
 
   //RDF Operations
-  @deprecated
+  /**
+    * Returns a VertexRDD of Nodes linked by the given property
+    * @param graph Spark GraphX of Nodes
+    * @param property String of the property given
+    * @return VertexRDD of Nodes linked by the given property
+    */
   def getSubjectsWithProperty(graph: org.apache.spark.graphx.Graph[Node, Node], property: String): VertexRDD[Node] = {
     val objectPropertyId = graph.edges.filter(edge=> edge.attr.hasURI(property)).map(line => line.srcId)
 
@@ -92,6 +148,15 @@ trait ReaderRDF extends Serializable{
       .map(line => (line._1, line._2._1))
     org.apache.spark.graphx.VertexRDD(newVerts.union(nodes).distinct())
   }
+
+  /**
+    * Returns a dataset of rows expanded by the number of levels given
+    *
+    * @param nodes VertexRDD of Nodes which are a subset of the Graph Nodes
+    * @param graph Spark GraphX of Nodes
+    * @param levels Number of levels to expand
+    * @return Dataset of Rows of expanded levels
+    */
   def expandNodesNLevel(nodes: VertexRDD[Node],
                         graph: org.apache.spark.graphx.Graph[Node, Node], levels: Int = 1): Dataset[Row] = {
     import processSparkSession.implicits._
