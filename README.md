@@ -14,7 +14,7 @@ Examples:
  Expand graph in 4 levels: 
  ```scala
  val step = MockedTripleReader
- val graph = step.loadGraph(spark, testPath)
+ val graph = step.loadGraph(spark, inputFile)
  val depth = 4
  val result = step.expandNodesNLevel(graph.vertices, graph, depth)
 ```
