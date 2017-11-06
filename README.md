@@ -18,3 +18,7 @@ Examples:
  val depth = 4
  val result = step.expandNodesNLevel(graph.vertices, graph, depth)
 ```
+
+## Future Work
+
+* Investigate Graphframes (https://graphframes.github.io/)
