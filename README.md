@@ -22,3 +22,4 @@ Examples:
 ## Future Work
 
 * Investigate Graphframes (https://graphframes.github.io/)
+* Include some new operations to RDF support
